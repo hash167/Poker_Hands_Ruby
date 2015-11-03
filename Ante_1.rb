@@ -44,23 +44,28 @@ class Hand
   end
    def ranking
     ranks.index(rank)
-  end
+   end
 
+
+	#  Returns and array with count of card values
 	def val_count(cards)
 		"123456789TJQK".chars.collect{|char| cards.count {|card| card.val == char}}
+	end
+	# Returns and array with count of Suites. Ignore the spelling in the function
+	def suit_count(cards)
+		["C","D","H","S"].collect{|ch| cards.count{|card| card.suite == ch}}
 	end
 
 	def straight?
 		val_count(@cards).join("").include?("11111")
 	end
 
-	def suit_count(cards)
-		["C","D","H","S"].collect{|ch| cards.count{|card| card.suite == ch}}
-	end
 
 	def flush?
 		suit_count(@cards).sort.reverse[0] == 5
 	end
+
+	# Functions for comparing 2 hands
 	 def keys
     	[ranking,val_count(@cards).reverse]
      end
@@ -77,16 +82,18 @@ class Poker_Engine
 
 	end
 
+	def print
+		@all_hands.each do |hand|
+			puts hand.rank
+		end
+	end
+
 	def evaluate
 		(0...@count).map do |count|
 			
 			@all_hands.count do |hand|
-				# puts hand.keys
-				# puts " "
-				# puts @all_hands[count].keys
-				# puts " "
-				# puts  hand <=> @all_hands[count]
-				# puts " "
+				 
+				
 				( @all_hands[count] <=> hand) > 0
 			end
 			
@@ -111,6 +118,6 @@ end
 pe = Poker_Engine.new(["JD QS 5D 6D KD","JC TH 5S 6S KS","JS JH 8S 8S 9S"])
 
 
-
+pe.print
 puts pe.winner
 
